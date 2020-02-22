@@ -12,7 +12,6 @@ body {
   font-family: 'Raleway', sans-serif;
   padding: 10px;
   background: #f1f1f1
-  
 }
 
 .header {
@@ -112,7 +111,6 @@ font-family: 'Montserrat Alternates', sans-serif;
 }
 
 
-/* Widgets */
 .fa-linkedin, .fa-instagram, .fa-pinterest, fa-github  {
   color: #736463;
 }
