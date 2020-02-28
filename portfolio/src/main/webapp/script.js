@@ -31,8 +31,7 @@ function addRandomGreeting() {
  * Fetches a random quote from the server and adds it to the DOM.
  */
 function getRandomQuote() {
-  const responsePromise = fetch('/data');
-  responsePromise.then(handleResponse);
+  fetch('/data').then(handleResponse);
 }
 
 /**
