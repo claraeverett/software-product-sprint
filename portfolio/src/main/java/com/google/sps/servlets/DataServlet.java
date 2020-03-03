@@ -30,14 +30,17 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the input from the form.
     String text = request.getParameter("text-input");
     messages.add(text);
-    response.getWriter().println(text);
-    
-    response.sendRedirect("/index.html");
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("comment", text);
+    
+    datastore.put(commentEntity);
+    response.sendRedirect("/index.html");
   }
-  
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
