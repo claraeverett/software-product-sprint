@@ -26,13 +26,16 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<String> messages;
+  private List<String> messages = new ArrayList<>();
+
   @Override
-  public void init(){
-      messages = new ArrayList<>();
-      messages.add("Bonjour");
-      messages.add("Ciao");
-      messages.add("Hola");  
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String text = request.getParameter("text-input");
+    messages.add(text);
+    response.getWriter().println(text);
+    
+    response.sendRedirect("/index.html");
   }
   
   @Override
