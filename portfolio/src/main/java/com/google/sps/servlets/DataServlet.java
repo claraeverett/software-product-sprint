@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,22 +38,29 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text-input");
     messages.add(text);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("comment", text);
-    
-    datastore.put(commentEntity);
-    response.sendRedirect("/index.html");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
+    Entity commentEntity = new Entity("comment");
+    commentEntity.setProperty("comment", text);
+    
+    datastore.put(commentEntity);
+    response.sendRedirect("/index.html");
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Clara!</h1>");
-
+    Query query = new Query("comment");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    
+    List<String> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String comment = (String) entity.getProperty("comment");
+      comments.add(comment);
+    }
     Gson gson = new Gson();
-    String json = gson.toJson(messages);
+    String json = gson.toJson(comments);
 
     response.setContentType("text/html;");
     response.getWriter().println(json);

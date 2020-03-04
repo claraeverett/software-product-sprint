@@ -7,7 +7,7 @@
     <script src="script.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates|Raleway&display=swap" rel="stylesheet">  </head>
-  <body>
+  <body onload="loadTasks()">
 
     <div id="content">
 
@@ -67,11 +67,13 @@
 </div>
 
 <form action="/data" method="POST">
-      <p>Enter a comment here:</p>
-      <textarea name="text-input"></textarea>
-      <br/><br/>
-      <input type="submit" />
+    <p>Enter a comment here:</p>
+    <textarea name="text-input"></textarea>
+    <br/><br/>
+    <input type="submit" name="title"/>
 </form>
+
+<ul id="task-list"></ul>
 
 <!--FOOTER --> 
 <div class="footer">
