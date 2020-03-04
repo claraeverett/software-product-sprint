@@ -53,7 +53,6 @@ function loadComments() {
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
     comments.forEach((comment) => {
-        //console.log("comment:", comment);
       commentListElement.appendChild(createListElement(comment));
     })
   });

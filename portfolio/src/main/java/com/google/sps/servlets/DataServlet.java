@@ -37,10 +37,8 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text-input");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
     Entity commentEntity = new Entity("comment");
     commentEntity.setProperty("comment", text);
-    
     datastore.put(commentEntity);
     response.sendRedirect("/index.html");
   }
@@ -50,16 +48,18 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    
+    Gson gson = new Gson();
+    response.setContentType("text/html;");
+    response.getWriter().println(gson.toJson(readComment(results)));
+  }
+
+  private List readComment(PreparedQuery results) {
     List<String> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
       comments.add(comment);
     }
-    Gson gson = new Gson();
-    String json = gson.toJson(comments);
-
-    response.setContentType("text/html;");
-    response.getWriter().println(json);
+    return comments;
   }
 }
+
