@@ -32,12 +32,10 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<String> messages = new ArrayList<>();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text-input");
-    messages.add(text);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
     Entity commentEntity = new Entity("comment");
@@ -55,7 +53,6 @@ public class DataServlet extends HttpServlet {
     
     List<String> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
       String comment = (String) entity.getProperty("comment");
       comments.add(comment);
     }
