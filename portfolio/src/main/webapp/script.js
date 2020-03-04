@@ -49,14 +49,11 @@ function addQuoteToDom(quote) {
   quoteContainer.innerText = quote;
 }
 
-function loadTasks() {
-console.log("Hello");
+function loadComments() {
   fetch('/data').then(response => response.json()).then((comments) => {
-    const commentListElement = document.getElementById('task-list');
+    const commentListElement = document.getElementById('comment-list');
     comments.forEach((comment) => {
-        commentListElement.innerText = "helloooo";
       commentListElement.appendChild(createListElement(comment));
-      commentListElement.innerText = createListElement(comment);
     })
   });
 }
@@ -66,15 +63,3 @@ function createListElement(text) {
     liElement.innerText = text;
     return liElement;
 }
-/** Creates an element that represents a task, including its delete button. */
-function createTaskElement(task) {
-  const taskElement = document.createElement('li');
-  taskElement.className = 'task';
-  const titleElement = document.createElement('span');
-  titleElement.innerText = task.title;
-  taskElement.appendChild(titleElement);
-  return taskElement;
-}
-
-
-
