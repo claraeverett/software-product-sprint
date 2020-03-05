@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,30 +32,34 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<String> messages = new ArrayList<>();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text-input");
-    messages.add(text);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("comment", text);
-    
-    datastore.put(commentEntity);
-    response.sendRedirect("/index.html");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity commentEntity = new Entity("comment");
+    commentEntity.setProperty("comment", text);
+    datastore.put(commentEntity);
+    response.sendRedirect("/index.html");
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Clara!</h1>");
-
+    Query query = new Query("comment");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
     Gson gson = new Gson();
-    String json = gson.toJson(messages);
-
     response.setContentType("text/html;");
-    response.getWriter().println(json);
+    response.getWriter().println(gson.toJson(readComments(results)));
+  }
+
+  private List readComments(PreparedQuery results) {
+    List<String> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      String comment = (String) entity.getProperty("comment");
+      comments.add(comment);
+    }
+    return comments;
   }
 }
+
