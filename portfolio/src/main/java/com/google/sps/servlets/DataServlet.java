@@ -50,10 +50,10 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     Gson gson = new Gson();
     response.setContentType("text/html;");
-    response.getWriter().println(gson.toJson(readComment(results)));
+    response.getWriter().println(gson.toJson(readComments(results)));
   }
 
-  private List readComment(PreparedQuery results) {
+  private List readComments(PreparedQuery results) {
     List<String> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");

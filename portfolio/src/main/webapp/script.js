@@ -12,43 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['I love to cook!', 'My dog is named Sawyer', 'Hiking is one of my favorite hobbies'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-
-/**
- * Fetches a random quote from the server and adds it to the DOM.
- */
-function getRandomQuote() {
-  fetch('/data').then(handleResponse);
-}
-
-/**
- * Handles response by converting it to text and passing the result to
- * addQuoteToDom().
- */
-function handleResponse(response) {
-  const textPromise = response.text();
-  textPromise.then(addQuoteToDom);
-}
-
-/** Adds a random quote to the DOM. */
-function addQuoteToDom(quote) {
-  const quoteContainer = document.getElementById('quote-container');
-  quoteContainer.innerText = quote;
-}
-
 function loadComments() {
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
