@@ -138,3 +138,11 @@ body {
     padding: 15px;
     text-align: center;
 }
+
+/* MAP CSS*/ 
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
+}
