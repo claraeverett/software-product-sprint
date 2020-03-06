@@ -30,5 +30,53 @@ function createListElement(text) {
 function createMap() {
   const map = new google.maps.Map(
       document.getElementById('map'),
-      {center: {lat: 37.422, lng: -122.084}, zoom: 16});
+      {center: {lat: 39.498742, lng: -99.829330}, zoom: 5}
+   );
+
+    var dearest = new google.maps.Marker({
+        position: {lat: 40.727387, lng: -74.005995},
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: 'Dearest Internship!'
+    });
+
+    var mtonomyString = 
+        '<p>I worked at <b>MTonomy</b>, last spring and worked on UX/UI Design for their wallet page' +'</p>';
+           
+    var mtonomy = new google.maps.Marker({
+        position: {lat: 42.372377, lng: -71.118532},
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: 'MTonomy Internship!'
+    });
+
+    var mtonomywindow = new google.maps.InfoWindow({
+          content: mtonomyString,
+          maxWidth: 200
+    });
+
+    mtonomy.addListener('click', function() {
+          mtonomywindow.open(map, mtonomy);
+    });
+
+    var cssi = new google.maps.Marker({
+        position: {lat: 40.456805, lng: -79.915391},
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: 'Google CSSI!'
+    });
+
+    var beam = new google.maps.Marker({
+        position: {lat: 37.422680, lng: -122.166733},
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: 'BEAM Associate!'
+    });
+
+    var nexthealth = new google.maps.Marker({
+        position: {lat: 39.749048, lng: -104.991325},
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: 'Next Health!'
+    });
 }
