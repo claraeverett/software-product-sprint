@@ -28,8 +28,8 @@ public final class FindMeetingQuery {
         return unavailableTimes;
     }
 
-    for(Event event: events){
-        if(attendeeInEvent(unavailableTimes, event, request)){
+    for (Event event : events){
+        if (attendeeInEvent(unavailableTimes, event, request)){
             ArrayList<TimeRange> temp = (ArrayList)unavailableTimes.clone();
             unavailableTimes = updateAvailability(temp, event.getWhen());
         }
@@ -41,7 +41,7 @@ public final class FindMeetingQuery {
   /* Given a list of unavailable time ranges, availability() will return an array of free time ranges. */ 
   private ArrayList<TimeRange> availability(ArrayList<TimeRange> unavailable, MeetingRequest request){
     ArrayList<TimeRange> available = new ArrayList<TimeRange>();
-    if(unavailable.isEmpty()){
+    if (unavailable.isEmpty()){
         available.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true));
         return available;
     }
@@ -49,9 +49,9 @@ public final class FindMeetingQuery {
     int currentTime = 0;
     int counter = 1;
 
-    for(TimeRange busy: unavailable){
-        if(counter == 1){
-            if((!busy.overlaps(TimeRange.fromStartDuration(0,busy.start()-1))) && ((int) request.getDuration() <= busy.start()-1)){
+    for (TimeRange busy : unavailable){
+        if (counter == 1){
+            if ((!busy.overlaps(TimeRange.fromStartDuration(0,busy.start()-1))) && ((int) request.getDuration() <= busy.start()-1)){
                 available.add(TimeRange.fromStartDuration(0,busy.start()));
             }
             currentTime = busy.end();
@@ -61,7 +61,7 @@ public final class FindMeetingQuery {
                 currentTime = busy.end()+1;
             }
         }
-        if(counter == unavailable.size()){
+        if (counter == unavailable.size()){
             if(!busy.overlaps(TimeRange.fromStartEnd(busy.end()+1, TimeRange.END_OF_DAY, true)) && ((int)request.getDuration()<= 24*60-busy.end())){
                 available.add(TimeRange.fromStartDuration(busy.end(), 24*60 - busy.end() ));
             }
@@ -74,8 +74,8 @@ public final class FindMeetingQuery {
   /* Returns true if an attendee is in the specific event*/
   private boolean attendeeInEvent(ArrayList<TimeRange> unavailableTimes, Event event, MeetingRequest request){
     Collection<String> attendeeInRequest = request.getAttendees();
-    for(String attendee: event.getAttendees()){
-        if(attendeeInRequest.contains(attendee)){
+    for (String attendee : event.getAttendees()){
+        if (attendeeInRequest.contains(attendee)){
             return true;
         }
     } 
@@ -84,10 +84,10 @@ public final class FindMeetingQuery {
 
   /* This function updateAvailability returns an updated list of unavailable times */ 
   private ArrayList<TimeRange> updateAvailability(ArrayList<TimeRange> unavailableTimes, TimeRange time){
-    if(unavailableTimes.isEmpty()){
+    if (unavailableTimes.isEmpty()){
         unavailableTimes.add(time);
         return unavailableTimes;
-    } else if(!conflicts(unavailableTimes, time)){
+    } else if (!conflicts(unavailableTimes, time)){
         unavailableTimes.add(time);
         return unavailableTimes;
     } else {
@@ -97,8 +97,8 @@ public final class FindMeetingQuery {
 
   /*This function returns true if an event conflicts with other events scheduled for the day. */
   private boolean conflicts(ArrayList<TimeRange> unavailable, TimeRange event){
-    for(TimeRange listTime: unavailable){
-        if(event.overlaps(listTime)){
+    for (TimeRange listTime : unavailable){
+        if (event.overlaps(listTime)){
             return true;
         }
     }
@@ -108,26 +108,26 @@ public final class FindMeetingQuery {
   /* This function updates the list of unavailable times. */
   private ArrayList<TimeRange> updateConflictList(ArrayList<TimeRange> unavailableTimes, TimeRange time){
     ArrayList<TimeRange> temp = (ArrayList) unavailableTimes.clone();
-        for(TimeRange listTime: temp){
-            if(time.contains(listTime)){
+        for (TimeRange listTime : temp){
+            if (time.contains(listTime)){
                 unavailableTimes.remove(listTime);
                 unavailableTimes.add(time);
-            } else if(listTime.contains(time)){
+            } else if (listTime.contains(time)){
                 unavailableTimes.remove(time);
                 if(!unavailableTimes.contains(listTime)){
                     unavailableTimes.add(listTime);
                 }
                 return unavailableTimes;
-            } else if(time.overlaps(listTime)){
+            } else if (time.overlaps(listTime)){
                 int start;
                 int end;
-                if(time.start() <= listTime.start()){
+                if (time.start() <= listTime.start()){
                     start = time.start();
-                } else{
+                } else {
                     start = listTime.start();
                 }
 
-                if(time.end() >= listTime.end()){
+                if (time.end() >= listTime.end()){
                     end = time.end();
                 } else {
                     end = listTime.end();
